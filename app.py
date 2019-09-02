@@ -36,6 +36,7 @@ def disconnect():
 
 @socketio.on('request', namespace='/mynamespace')
 def request(message):
+    print(message)
     emit('response', {'data': message['data'], 'username': session['username']}, broadcast=True)
 
 

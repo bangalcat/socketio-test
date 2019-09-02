@@ -11,25 +11,26 @@
       #messages li { padding: 5px 10px; }
       #messages li:nth-child(odd) { background: #eee; }
     </style>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            const socket = io('http://' + document.domain + ':' + location.port + '/mynamespace');
-            socket.on('coonect', )
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script type="text/javascript">
+        window.onload = function(){
+            const socket = io.connect('http://' + document.domain + ':' + location.port + '/mynamespace');
+            {#socket.on('connect', );#}
             console.log(socket.id);
             socket.on('response', function(msg){
-                $("#received").append('<p> ' + msg.username + ': ' + msg.data + '</p>');
+                document.getElementById("received").innerHTML += '<p> ' + msg.username + ': ' + msg.data + '</p>';
             });
-            $("form#broadcast").submit(function(event){
-                if($("#input-data").val() == "") {
+
+
+            document.getElementById("send").onclick = function(event){
+                if(document.querySelector("input#input-data").val == "") {
                     return false;
                 }
-                socket.emit("request", {data: $("#input-data").val()});
-                $("#input-data").val("");
+                socket.emit("request", {data: document.getElementById("input-data").value });
+                document.getElementById("input-data").value = "";
                 return false;
-            });
-        });
+            }
+        }
     </script>
     <meta charset="UTF-8">
     <title>websock test</title>
@@ -39,7 +40,7 @@
 <div id="received"> </div>
 <form id="broadcast" action="#">
     <input id="input-data" type="text"/>
-    <input type="submit"/>
+    <input id="send" type="submit"/>
 </form>
 </body>
 </html>
